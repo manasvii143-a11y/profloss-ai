@@ -1,0 +1,1212 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>How to Manage Your Finances — Presentation</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary-green: #006437;
+      --primary-green-dark: #004D2A;
+      --bg-white: #FFFFFF;
+      --bg-light-gray: #EFEFEF;
+      --text-dark: #222222;
+      --text-muted: #555555;
+      --font-serif: 'Fraunces', Georgia, serif;
+      --font-sans: 'Plus Jakarta Sans', -apple-system, sans-serif;
+      --slide-width: 1280px;
+      --slide-height: 720px;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      background-color: #111827;
+      color: var(--text-dark);
+      font-family: var(--font-sans);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      min-height: 100vh;
+      padding: 20px;
+    }
+
+    /* Top Controls Bar */
+    .controls-bar {
+      width: 100%;
+      max-width: var(--slide-width);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: #1F2937;
+      padding: 12px 24px;
+      border-radius: 12px;
+      margin-bottom: 16px;
+      color: #FFF;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+    }
+
+    .brand-title {
+      font-family: var(--font-serif);
+      font-size: 20px;
+      font-weight: 700;
+      color: #4ADE80;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .nav-buttons {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .btn {
+      background: var(--primary-green);
+      color: #FFF;
+      border: none;
+      padding: 8px 18px;
+      border-radius: 20px;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .btn:hover {
+      background: #007D45;
+      transform: translateY(-1px);
+    }
+
+    .btn-secondary {
+      background: #374151;
+    }
+    .btn-secondary:hover {
+      background: #4B5563;
+    }
+
+    .slide-counter {
+      font-family: var(--font-sans);
+      font-size: 15px;
+      font-weight: 600;
+      background: #374151;
+      padding: 6px 14px;
+      border-radius: 16px;
+    }
+
+    /* Presentation Frame Container */
+    .deck-container {
+      position: relative;
+      width: var(--slide-width);
+      height: var(--slide-height);
+      background: #FFFFFF;
+      border-radius: 16px;
+      overflow: hidden;
+      box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+    }
+
+    /* Slide Elements */
+    .slide {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: #FFFFFF;
+      display: none;
+      overflow: hidden;
+    }
+
+    .slide.active {
+      display: block;
+    }
+
+    /* Common Graphic Shapes */
+    .dot-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 8px;
+      width: fit-content;
+    }
+
+    .dot-grid .dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background-color: var(--primary-green);
+    }
+
+    .dot-grid.white .dot {
+      background-color: #FFFFFF;
+    }
+
+    .circle-accent {
+      position: absolute;
+      border-radius: 50%;
+      background-color: var(--primary-green);
+    }
+
+    /* Slide 1 Styles */
+    .s1-date {
+      position: absolute;
+      top: 60px;
+      left: 90px;
+      font-size: 24px;
+      color: #333;
+      font-weight: 500;
+    }
+
+    .s1-title-box {
+      position: absolute;
+      top: 140px;
+      left: 90px;
+      width: 650px;
+    }
+
+    .s1-title {
+      font-family: var(--font-serif);
+      font-size: 78px;
+      line-height: 1.05;
+      font-weight: 700;
+      color: var(--text-dark);
+      margin-bottom: 40px;
+    }
+
+    .s1-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+      background: var(--bg-light-gray);
+      padding: 14px 28px;
+      border-radius: 40px;
+      font-size: 22px;
+      color: #333;
+      font-weight: 500;
+    }
+
+    .s1-pill .green-dot {
+      width: 32px;
+      height: 32px;
+      background: var(--primary-green);
+      border-radius: 50%;
+    }
+
+    .s1-img-mask {
+      position: absolute;
+      top: -120px;
+      right: -80px;
+      width: 720px;
+      height: 720px;
+      border-radius: 50%;
+      overflow: hidden;
+      background: #E5E5E5;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .s1-green-badge {
+      position: absolute;
+      top: 60px;
+      right: 480px;
+      width: 130px;
+      height: 130px;
+      background: var(--primary-green);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 5;
+    }
+
+    .s1-bg-circle-bottom {
+      position: absolute;
+      bottom: -220px;
+      right: 120px;
+      width: 480px;
+      height: 480px;
+      background: var(--primary-green);
+      border-radius: 50%;
+    }
+
+    /* Slide 2 Styles */
+    .s2-left-arc {
+      position: absolute;
+      top: -180px;
+      left: -220px;
+      width: 850px;
+      height: 850px;
+      background: var(--primary-green);
+      border-radius: 50%;
+    }
+
+    .s2-img-crop {
+      position: absolute;
+      top: 60px;
+      left: -60px;
+      width: 520px;
+      height: 520px;
+      border-radius: 50%;
+      overflow: hidden;
+      border: 10px solid #FFF;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+      background: #EBEBEB;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .s2-green-badge {
+      position: absolute;
+      bottom: 120px;
+      left: 360px;
+      width: 140px;
+      height: 140px;
+      background: var(--primary-green-dark);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 6;
+      border: 4px solid #FFF;
+    }
+
+    .s2-right-content {
+      position: absolute;
+      top: 130px;
+      right: 120px;
+      width: 460px;
+    }
+
+    .s2-heading {
+      font-family: var(--font-serif);
+      font-size: 72px;
+      color: var(--primary-green);
+      line-height: 1.05;
+      font-weight: 700;
+      margin-bottom: 16px;
+    }
+
+    .s2-sub {
+      font-size: 24px;
+      color: #333;
+      margin-bottom: 40px;
+    }
+
+    .s2-list {
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+    }
+
+    .s2-item {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      font-size: 26px;
+      font-weight: 500;
+      color: #222;
+    }
+
+    .s2-num {
+      font-family: var(--font-serif);
+      font-size: 42px;
+      font-weight: 700;
+      color: #222;
+    }
+
+    /* Slide 3 Styles */
+    .s3-header-badge {
+      position: absolute;
+      top: 60px;
+      left: 190px;
+      display: flex;
+      align-items: center;
+      background: var(--bg-light-gray);
+      border-radius: 60px;
+      padding-right: 40px;
+      height: 100px;
+    }
+
+    .s3-step-circle {
+      width: 120px;
+      height: 120px;
+      background: var(--primary-green);
+      border-radius: 50%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      color: #FFF;
+      font-size: 20px;
+      font-weight: 600;
+      line-height: 1;
+      margin-left: -20px;
+      box-shadow: 0 6px 16px rgba(0,0,0,0.15);
+    }
+    .s3-step-circle .num {
+      font-family: var(--font-serif);
+      font-size: 38px;
+      font-weight: 700;
+    }
+
+    .s3-header-text {
+      font-family: var(--font-serif);
+      font-size: 54px;
+      font-weight: 700;
+      color: var(--primary-green);
+      margin-left: 30px;
+    }
+
+    .s3-intro {
+      position: absolute;
+      top: 210px;
+      left: 200px;
+      width: 720px;
+      font-size: 25px;
+      color: #333;
+      line-height: 1.4;
+      text-align: center;
+    }
+
+    .s3-columns {
+      position: absolute;
+      top: 340px;
+      left: 190px;
+      display: flex;
+      gap: 30px;
+    }
+
+    .s3-col {
+      width: 250px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .s3-col-pill {
+      width: 100%;
+      background: var(--primary-green);
+      color: #FFF;
+      font-family: var(--font-serif);
+      font-size: 30px;
+      font-weight: 600;
+      padding: 16px 0;
+      border-radius: 28px 28px 0 0;
+      text-align: center;
+    }
+
+    .s3-col-body {
+      width: 100%;
+      background: #FFF;
+      border: 3px solid var(--primary-green);
+      border-top: none;
+      border-radius: 0 0 28px 28px;
+      padding: 40px 20px;
+      text-align: center;
+      font-size: 24px;
+      color: #333;
+      line-height: 1.3;
+      height: 180px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .s3-right-arc {
+      position: absolute;
+      top: 30px;
+      right: -360px;
+      width: 780px;
+      height: 780px;
+      background: var(--primary-green);
+      border-radius: 50%;
+    }
+
+    /* Slide 4 Styles */
+    .s4-pill {
+      position: absolute;
+      top: 100px;
+      left: 180px;
+      background: var(--primary-green);
+      color: #FFF;
+      font-family: var(--font-serif);
+      font-size: 48px;
+      font-weight: 600;
+      padding: 24px 100px;
+      border-radius: 60px;
+      z-index: 5;
+    }
+
+    .s4-card {
+      position: absolute;
+      top: 170px;
+      left: 110px;
+      width: 700px;
+      background: var(--bg-light-gray);
+      border-radius: 36px;
+      padding: 90px 50px 40px 50px;
+      font-size: 26px;
+      line-height: 1.45;
+      color: #333;
+      z-index: 4;
+    }
+
+    .s4-bottom-img {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      height: 300px;
+      background: #D5D5D5;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-top: 4px solid var(--primary-green);
+    }
+
+    .s4-top-right-circle {
+      position: absolute;
+      top: -240px;
+      right: -100px;
+      width: 620px;
+      height: 620px;
+      background: var(--primary-green);
+      border-radius: 50%;
+    }
+
+    .s4-badge {
+      position: absolute;
+      top: 180px;
+      right: 170px;
+      width: 140px;
+      height: 140px;
+      background: var(--primary-green-dark);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 6;
+    }
+
+    /* Slide 5 Styles */
+    .s5-left-img-mask {
+      position: absolute;
+      top: -120px;
+      left: -150px;
+      width: 600px;
+      height: 600px;
+      border-radius: 50%;
+      overflow: hidden;
+      background: #E2E2E2;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .s5-right-pill {
+      position: absolute;
+      top: 140px;
+      right: 320px;
+      background: var(--primary-green);
+      color: #FFF;
+      font-family: var(--font-serif);
+      font-size: 48px;
+      font-weight: 600;
+      padding: 24px 100px;
+      border-radius: 60px;
+      z-index: 5;
+    }
+
+    .s5-right-card {
+      position: absolute;
+      top: 210px;
+      right: 100px;
+      width: 700px;
+      background: var(--bg-light-gray);
+      border-radius: 36px;
+      padding: 90px 50px 50px 50px;
+      font-size: 26px;
+      line-height: 1.45;
+      color: #333;
+      z-index: 4;
+    }
+
+    /* Slide 6 Styles */
+    .s6-img-card {
+      position: absolute;
+      top: 180px;
+      left: 70px;
+      width: 380px;
+      height: 440px;
+      border-radius: 36px;
+      overflow: hidden;
+      background: #EAEAEA;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .s6-green-badge {
+      position: absolute;
+      bottom: 60px;
+      left: 200px;
+      width: 120px;
+      height: 120px;
+      background: var(--primary-green);
+      border-radius: 50%;
+      z-index: 5;
+    }
+
+    .s6-right-pill {
+      position: absolute;
+      top: 150px;
+      right: 320px;
+      background: var(--primary-green);
+      color: #FFF;
+      font-family: var(--font-serif);
+      font-size: 48px;
+      font-weight: 600;
+      padding: 24px 100px;
+      border-radius: 60px;
+      z-index: 5;
+    }
+
+    .s6-right-card {
+      position: absolute;
+      top: 220px;
+      right: 80px;
+      width: 700px;
+      background: var(--bg-light-gray);
+      border-radius: 36px;
+      padding: 90px 50px 50px 50px;
+      font-size: 26px;
+      line-height: 1.45;
+      color: #333;
+      z-index: 4;
+    }
+
+    /* Slide 7 Styles */
+    .s7-img-crop {
+      position: absolute;
+      top: -100px;
+      left: -120px;
+      width: 600px;
+      height: 600px;
+      border-radius: 50%;
+      overflow: hidden;
+      background: #ECECEC;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .s7-badge {
+      position: absolute;
+      bottom: 120px;
+      left: 310px;
+      width: 130px;
+      height: 130px;
+      background: var(--primary-green-dark);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 6;
+    }
+
+    .s7-header-badge {
+      position: absolute;
+      top: 100px;
+      right: 100px;
+      display: flex;
+      align-items: center;
+      background: var(--bg-light-gray);
+      border-radius: 60px;
+      padding-right: 50px;
+      height: 100px;
+    }
+
+    .s7-card {
+      position: absolute;
+      top: 250px;
+      right: 100px;
+      width: 640px;
+      background: var(--bg-light-gray);
+      border-radius: 36px;
+      padding: 44px 50px;
+      font-size: 26px;
+      line-height: 1.45;
+      color: #333;
+    }
+
+    /* Slide 8 Styles */
+    .s8-heading {
+      position: absolute;
+      top: 90px;
+      left: 120px;
+      font-family: var(--font-serif);
+      font-size: 64px;
+      color: var(--primary-green);
+      font-weight: 700;
+      line-height: 1.1;
+    }
+
+    .s8-sub {
+      position: absolute;
+      top: 260px;
+      left: 120px;
+      font-size: 26px;
+      color: #333;
+    }
+
+    .s8-card-container {
+      position: absolute;
+      top: 320px;
+      left: 20px;
+      width: 1240px;
+      background: var(--bg-light-gray);
+      border-radius: 36px;
+      padding: 40px 60px;
+      display: flex;
+      flex-direction: column;
+      gap: 30px;
+    }
+
+    .s8-row {
+      display: flex;
+      align-items: center;
+      gap: 40px;
+    }
+
+    .s8-pill-btn {
+      width: 320px;
+      background: var(--primary-green);
+      color: #FFF;
+      font-family: var(--font-serif);
+      font-size: 28px;
+      font-weight: 600;
+      padding: 18px 24px;
+      border-radius: 36px;
+      text-align: center;
+      flex-shrink: 0;
+    }
+
+    .s8-text {
+      font-size: 25px;
+      color: #333;
+      line-height: 1.35;
+    }
+
+    /* Slide 9 Styles */
+    .s9-header-badge {
+      position: absolute;
+      top: 60px;
+      left: 60px;
+      display: flex;
+      align-items: center;
+      background: var(--bg-light-gray);
+      border-radius: 60px;
+      padding-right: 50px;
+      height: 100px;
+    }
+
+    .s9-card {
+      position: absolute;
+      top: 200px;
+      left: 60px;
+      width: 720px;
+      background: var(--bg-light-gray);
+      border-radius: 36px;
+      padding: 44px;
+    }
+
+    .s9-p {
+      font-size: 25px;
+      line-height: 1.4;
+      color: #333;
+      margin-bottom: 30px;
+    }
+
+    .s9-list {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .s9-item {
+      display: flex;
+      align-items: center;
+      gap: 24px;
+    }
+
+    .s9-num {
+      font-family: var(--font-serif);
+      font-size: 44px;
+      font-weight: 700;
+      color: #222;
+    }
+
+    .s9-pill-item {
+      flex: 1;
+      background: var(--primary-green);
+      color: #FFF;
+      font-size: 23px;
+      font-weight: 500;
+      padding: 18px 30px;
+      border-radius: 40px;
+    }
+
+    .s9-img-crop {
+      position: absolute;
+      top: 90px;
+      right: 40px;
+      width: 440px;
+      height: 480px;
+      border-radius: 40px;
+      overflow: hidden;
+      background: #1F2622;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    /* Slide 10 Styles */
+    .s10-title {
+      position: absolute;
+      top: 180px;
+      width: 100%;
+      text-align: center;
+      font-family: var(--font-serif);
+      font-size: 96px;
+      font-weight: 700;
+      color: #222;
+    }
+
+    .s10-grid {
+      position: absolute;
+      top: 360px;
+      left: 180px;
+      width: 920px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 24px;
+    }
+
+    .s10-pill {
+      background: var(--bg-light-gray);
+      border-radius: 40px;
+      padding: 16px 28px;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      font-size: 22px;
+      color: #333;
+      font-weight: 500;
+    }
+
+    .s10-icon-circle {
+      width: 44px;
+      height: 44px;
+      background: var(--primary-green);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #FFF;
+      font-size: 20px;
+    }
+
+    /* Print / Presentation Mode */
+    @media print {
+      body {
+        background: none;
+        padding: 0;
+      }
+      .controls-bar {
+        display: none;
+      }
+      .deck-container {
+        width: 100vw;
+        height: 100vh;
+        box-shadow: none;
+        border-radius: 0;
+      }
+      .slide {
+        display: block !important;
+        page-break-after: always;
+        position: relative;
+        width: 100vw;
+        height: 100vh;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Controls Bar -->
+  <div class="controls-bar">
+    <div class="brand-title">
+      <span>PROFLOSS.AI</span>
+      <span style="font-size: 13px; font-weight: 400; color: #9CA3AF;">| Executive Presentation</span>
+    </div>
+    <div class="nav-buttons">
+      <button class="btn btn-secondary" onclick="prevSlide()">‹ Prev</button>
+      <span class="slide-counter" id="slide-counter">Slide 1 of 10</span>
+      <button class="btn" onclick="nextSlide()">Next ›</button>
+      <button class="btn btn-secondary" style="margin-left: 12px;" onclick="window.print()">Export PDF / Print</button>
+    </div>
+  </div>
+
+  <!-- Deck Container (16:9 Aspect Ratio Presentation Frame) -->
+  <div class="deck-container" id="deck-container">
+
+    <!-- SLIDE 1: Title Slide -->
+    <div class="slide active" id="slide-1">
+      <div class="s1-date">01/12/2027</div>
+      <div class="s1-title-box">
+        <h1 class="s1-title">How to<br>Manage Your<br>Finances</h1>
+        <div class="s1-pill">
+          <span>created by Warner & Spencer</span>
+          <div class="green-dot"></div>
+        </div>
+      </div>
+      <!-- Right Graphic -->
+      <div class="s1-img-mask">
+        <svg width="420" height="420" viewBox="0 0 200 200" fill="none">
+          <rect x="20" y="30" width="90" height="130" rx="8" fill="#222222" />
+          <rect x="30" y="42" width="70" height="28" rx="4" fill="#666666" />
+          <circle cx="42" cy="90" r="7" fill="#888888" /><circle cx="65" cy="90" r="7" fill="#888888" /><circle cx="88" cy="90" r="7" fill="#888888" />
+          <circle cx="42" cy="110" r="7" fill="#888888" /><circle cx="65" cy="110" r="7" fill="#888888" /><circle cx="88" cy="110" r="7" fill="#888888" />
+          <circle cx="42" cy="130" r="7" fill="#888888" /><circle cx="65" cy="130" r="7" fill="#888888" /><circle cx="88" cy="130" r="7" fill="#888888" />
+          <ellipse cx="140" cy="140" rx="28" ry="10" fill="#AAAAAA" stroke="#333" stroke-width="2"/>
+          <ellipse cx="140" cy="130" rx="28" ry="10" fill="#CCCCCC" stroke="#333" stroke-width="2"/>
+          <ellipse cx="140" cy="120" rx="28" ry="10" fill="#E5E5E5" stroke="#333" stroke-width="2"/>
+          <ellipse cx="140" cy="110" rx="28" ry="10" fill="#FFFFFF" stroke="#333" stroke-width="2"/>
+        </svg>
+      </div>
+      <div class="s1-green-badge">
+        <div class="dot-grid white">
+          <div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div>
+          <div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div>
+          <div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div>
+        </div>
+      </div>
+      <div class="s1-bg-circle-bottom"></div>
+    </div>
+
+    <!-- SLIDE 2: Today Highlight -->
+    <div class="slide" id="slide-2">
+      <div class="s2-left-arc"></div>
+      <div class="s2-img-crop">
+        <svg width="340" height="340" viewBox="0 0 200 200" fill="none">
+          <rect x="25" y="25" width="150" height="150" rx="12" fill="#FFFFFF" stroke="#DDD" stroke-width="3"/>
+          <path d="M40 140 L70 100 L100 120 L130 70 L160 90" stroke="#006437" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
+          <rect x="45" y="110" width="16" height="30" fill="#444444"/>
+          <rect x="75" y="90" width="16" height="50" fill="#666666"/>
+          <rect x="105" y="105" width="16" height="35" fill="#888888"/>
+          <rect x="135" y="65" width="16" height="75" fill="#006437"/>
+        </svg>
+      </div>
+      <div class="s2-green-badge">
+        <div class="dot-grid white">
+          <div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div>
+          <div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div>
+          <div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div>
+        </div>
+      </div>
+      <div class="s2-right-content">
+        <h2 class="s2-heading">Today<br>Highlight</h2>
+        <p class="s2-sub">This is the discussion outline</p>
+        <div class="s2-list">
+          <div class="s2-item">
+            <span class="s2-num">01</span>
+            <span>Cash Flow</span>
+          </div>
+          <div class="s2-item">
+            <span class="s2-num">02</span>
+            <span>Protection</span>
+          </div>
+          <div class="s2-item">
+            <span class="s2-num">03</span>
+            <span>Investment</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SLIDE 3: Step 01 Overview -->
+    <div class="slide" id="slide-3">
+      <div class="s3-header-badge">
+        <div class="s3-step-circle">
+          <span style="font-size:14px;">step</span>
+          <span class="num">01</span>
+        </div>
+        <span class="s3-header-text">Cash Flow</span>
+      </div>
+      <p class="s3-intro">
+        For recording cash flow. We need to do the percentage distribution of expenses first.
+      </p>
+      <div class="s3-columns">
+        <div class="s3-col">
+          <div class="s3-col-pill">Needs</div>
+          <div class="s3-col-body">50 % from<br>Income</div>
+        </div>
+        <div class="s3-col">
+          <div class="s3-col-pill">Wants</div>
+          <div class="s3-col-body">30 % from<br>Income</div>
+        </div>
+        <div class="s3-col">
+          <div class="s3-col-pill">Savings</div>
+          <div class="s3-col-body">20 % from<br>Income</div>
+        </div>
+      </div>
+      <div class="s3-right-arc"></div>
+    </div>
+
+    <!-- SLIDE 4: Needs (50%) -->
+    <div class="slide" id="slide-4">
+      <div class="s4-top-right-circle"></div>
+      <div class="s4-badge">
+        <div class="dot-grid white">
+          <div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div>
+          <div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div>
+          <div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div>
+        </div>
+      </div>
+      <div class="s4-pill">Needs</div>
+      <div class="s4-card">
+        Separate 50% of income for all primary needs. These needs include food, clothing, and shelter. Make sure the primary needs do not exceed 50%.
+      </div>
+      <div class="s4-bottom-img">
+        <svg width="800" height="260" viewBox="0 0 800 200" fill="none">
+          <rect x="40" y="40" width="200" height="120" rx="8" fill="#B0B0B0" />
+          <rect x="280" y="40" width="200" height="120" rx="8" fill="#909090" />
+          <rect x="520" y="40" width="200" height="120" rx="8" fill="#707070" />
+          <circle cx="140" cy="100" r="28" fill="#333"/>
+          <circle cx="380" cy="100" r="28" fill="#222"/>
+          <circle cx="620" cy="100" r="28" fill="#111"/>
+          <text x="140" y="180" text-anchor="middle" font-family="sans-serif" font-weight="bold" font-size="16" fill="#333">FOOD & SUPPLIES</text>
+          <text x="380" y="180" text-anchor="middle" font-family="sans-serif" font-weight="bold" font-size="16" fill="#333">CLOTHING</text>
+          <text x="620" y="180" text-anchor="middle" font-family="sans-serif" font-weight="bold" font-size="16" fill="#333">SHELTER</text>
+        </svg>
+      </div>
+    </div>
+
+    <!-- SLIDE 5: Wants (30%) -->
+    <div class="slide" id="slide-5">
+      <div class="s5-left-img-mask">
+        <svg width="320" height="320" viewBox="0 0 200 200" fill="none">
+          <path d="M40 60 H160 L140 130 H60 Z" fill="#666666" />
+          <circle cx="80" cy="155" r="14" fill="#222" />
+          <circle cx="120" cy="155" r="14" fill="#222" />
+          <rect x="75" y="25" width="50" height="40" rx="4" fill="#006437" />
+        </svg>
+      </div>
+      <div class="dot-grid" style="position:absolute; bottom:140px; left:120px;">
+        <div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div>
+        <div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div>
+        <div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div>
+      </div>
+      <div class="s5-right-pill">Wants</div>
+      <div class="s5-right-card">
+        The next 30% we can allocate for our wants. For example buying the things we want but should not exceed 30%. If not used, the funds can be allocated for savings.
+      </div>
+      <div class="circle-accent" style="width:360px; height:360px; bottom:-180px; right:180px;"></div>
+    </div>
+
+    <!-- SLIDE 6: Savings (20%) -->
+    <div class="slide" id="slide-6">
+      <div class="dot-grid" style="position:absolute; top:100px; left:100px;">
+        <div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div>
+        <div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div>
+        <div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div>
+      </div>
+      <div class="s6-img-card">
+        <svg width="260" height="300" viewBox="0 0 160 200" fill="none">
+          <rect x="35" y="50" width="90" height="120" rx="16" fill="#FFFFFF" stroke="#888" stroke-width="4"/>
+          <rect x="45" y="35" width="70" height="15" rx="4" fill="#666"/>
+          <circle cx="80" cy="90" r="12" fill="#006437"/>
+          <circle cx="65" cy="120" r="10" fill="#AAAAAA"/>
+          <circle cx="95" cy="125" r="10" fill="#CCCCCC"/>
+          <circle cx="80" cy="145" r="10" fill="#DDDDDD"/>
+        </svg>
+      </div>
+      <div class="s6-green-badge"></div>
+      <div class="s6-right-pill">Savings</div>
+      <div class="s6-right-card">
+        Before allocating funds for wants, separate it 20% for savings. Try not to use savings funds, savings funds will be used for the next step.
+      </div>
+      <div class="circle-accent" style="width:420px; height:420px; top:-200px; right:-100px;"></div>
+    </div>
+
+    <!-- SLIDE 7: Step 02 Protection -->
+    <div class="slide" id="slide-7">
+      <div class="s7-img-crop">
+        <svg width="340" height="340" viewBox="0 0 200 200" fill="none">
+          <circle cx="100" cy="100" r="75" fill="#FFFFFF" stroke="#006437" stroke-width="6"/>
+          <path d="M100 45 L145 65 V105 C145 135 100 155 100 155 C100 155 55 135 55 105 V65 L100 45 Z" fill="#006437"/>
+          <path d="M85 100 L95 110 L115 85" stroke="#FFFFFF" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </div>
+      <div class="s7-badge">
+        <div class="dot-grid white">
+          <div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div>
+          <div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div>
+          <div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div>
+        </div>
+      </div>
+      <div class="s7-header-badge">
+        <div class="s3-step-circle">
+          <span style="font-size:14px;">step</span>
+          <span class="num">02</span>
+        </div>
+        <span class="s3-header-text">Protection</span>
+      </div>
+      <div class="s7-card">
+        The next step is the allocation of funds for protection. The protection fund is obtained from 20% of the savings that we set aside each month. If the savings fund has reached 6x of salary, we can enter step 2.
+      </div>
+      <div class="circle-accent" style="width:500px; height:500px; bottom:-250px; right:-100px;"></div>
+    </div>
+
+    <!-- SLIDE 8: Various Kinds of Protection -->
+    <div class="slide" id="slide-8">
+      <h2 class="s8-heading">Various Kinds<br>of Protection</h2>
+      <p class="s8-sub">The protection fund consists of:</p>
+      <div class="s8-card-container">
+        <div class="s8-row">
+          <div class="s8-pill-btn">Insurance Fund</div>
+          <div class="s8-text">List of health insurance and life insurance.</div>
+        </div>
+        <div class="s8-row">
+          <div class="s8-pill-btn">Emergency Fund</div>
+          <div class="s8-text">Emergency funds that must be available to be safe at least 3x our income each month.</div>
+        </div>
+      </div>
+      <div class="circle-accent" style="width:520px; height:520px; top:-220px; right:-100px;">
+        <div class="dot-grid white" style="position:absolute; bottom:120px; left:120px;">
+          <div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div>
+          <div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div>
+          <div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SLIDE 9: Step 03 Investment -->
+    <div class="slide" id="slide-9">
+      <div class="s9-header-badge">
+        <div class="s3-step-circle">
+          <span style="font-size:14px;">step</span>
+          <span class="num">03</span>
+        </div>
+        <span class="s3-header-text">Investment</span>
+      </div>
+      <div class="s9-card">
+        <p class="s9-p">
+          After step 2 is fulfilled, we can go to step 3. Step 3 is allocating funds for investment. For income that is not so big we can choose the following investments:
+        </p>
+        <div class="s9-list">
+          <div class="s9-item">
+            <span class="s9-num">01</span>
+            <div class="s9-pill-item">Invest in something that creates income</div>
+          </div>
+          <div class="s9-item">
+            <span class="s9-num">02</span>
+            <div class="s9-pill-item">Invest in financial instruments</div>
+          </div>
+        </div>
+      </div>
+      <div class="s9-img-crop">
+        <svg width="340" height="340" viewBox="0 0 200 200" fill="none">
+          <path d="M20 160 L60 120 L100 140 L140 70 L180 90" stroke="#4ADE80" stroke-width="4" stroke-linecap="round"/>
+          <circle cx="140" cy="70" r="6" fill="#4ADE80"/>
+          <rect x="30" y="130" width="12" height="30" fill="#006437"/>
+          <rect x="70" y="110" width="12" height="50" fill="#006437"/>
+          <rect x="110" y="90" width="12" height="70" fill="#4ADE80"/>
+          <rect x="150" y="80" width="12" height="80" fill="#006437"/>
+        </svg>
+      </div>
+      <div class="circle-accent" style="width:140px; height:140px; bottom:80px; right:40px; z-index:5;">
+        <div class="dot-grid white" style="margin: auto;">
+          <div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div>
+          <div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div>
+          <div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SLIDE 10: Thank You -->
+    <div class="slide" id="slide-10">
+      <div class="circle-accent" style="width:400px; height:400px; top:-200px; left:-180px;"></div>
+      <h1 class="s10-title">Thank You</h1>
+      <div class="s10-grid">
+        <div class="s10-pill">
+          <div class="s10-icon-circle">📞</div>
+          <span>+123-456-7890</span>
+        </div>
+        <div class="s10-pill">
+          <div class="s10-icon-circle">✉️</div>
+          <span>hello@reallygreatsite.com</span>
+        </div>
+        <div class="s10-pill">
+          <div class="s10-icon-circle">🌐</div>
+          <span>www.reallygreatsite.com</span>
+        </div>
+        <div class="s10-pill">
+          <div class="s10-icon-circle">📍</div>
+          <span>123 Anywhere St., Any City</span>
+        </div>
+      </div>
+      <div class="dot-grid" style="position:absolute; top:120px; right:140px;">
+        <div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div>
+        <div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div>
+        <div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div>
+      </div>
+      <div class="circle-accent" style="width:440px; height:440px; bottom:-220px; right:-100px;"></div>
+    </div>
+
+  </div>
+
+  <script>
+    let currentSlide = 1;
+    const totalSlides = 10;
+
+    function showSlide(index) {
+      if (index < 1) index = totalSlides;
+      if (index > totalSlides) index = 1;
+      currentSlide = index;
+
+      document.querySelectorAll('.slide').forEach((slide, i) => {
+        slide.classList.toggle('active', i + 1 === currentSlide);
+      });
+
+      document.getElementById('slide-counter').textContent = `Slide ${currentSlide} of ${totalSlides}`;
+    }
+
+    function prevSlide() {
+      showSlide(currentSlide - 1);
+    }
+
+    function nextSlide() {
+      showSlide(currentSlide + 1);
+    }
+
+    // Keyboard Navigation
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'ArrowLeft') prevSlide();
+      if (e.key === 'ArrowRight' || e.key === ' ') nextSlide();
+    });
+  </script>
+</body>
+</html>
