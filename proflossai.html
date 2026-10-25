@@ -4155,7 +4155,7 @@ C1015,2025-02-10,2025-06-05,690,active`,
     /* ================================================================
        CEO CHAT
     ================================================================ */
-    function renderCEOChat() {
+   async function renderCEOChat() {
       const msgs = state.chatMessages;
       const initMsg = msgs.length === 0;
       // Build a dynamic greeting from actual report data
@@ -4223,65 +4223,40 @@ C1015,2025-02-10,2025-06-05,690,active`,
         msgs_el.scrollTop = msgs_el.scrollHeight;
 
         // Predefined CEO responses based on keywords
-        const r = state.reports;
-        const ceo = r.ceo || fallback('ceo');
-        const da  = r.dataAnalyst || fallback('dataAnalyst');
-        const cfo = r.cfo || fallback('cfo');
-        const soc = r.social || fallback('social');
-        const risk = r.risk || fallback('risk');
-        const q = txt.toLowerCase();
+        
+let reply = "";
 
-        const predefined = [
-          {
-            keys: ['revenue','sales','income','earnings'],
-            ans: `Revenue is trending ${da.revenueTrend} at ${da.revenueTrendPct}% — total recorded at $${(cfo.revenue||0).toLocaleString()}. The core driver is ${da.topProducts?.[0]?.name||'our top product'}, which accounts for ${da.topProducts?.[0]?.sharePct||'a significant share'}% of volume. ${cfo.budgetNote||'Expense discipline remains key.'}`
-          },
-          {
-            keys: ['profit','margin','expense','cost'],
-            ans: `Profit margin sits at ${cfo.profitMarginPct}%, a ${cfo.profitMarginChangePct > 0 ? '+' : ''}${cfo.profitMarginChangePct}% shift from the prior period. Cash flow is ${cfo.cashFlowStatus}. ${cfo.budgetNote}`
-          },
-          {
-            keys: ['customer','churn','retention','loyalty'],
-            ans: `Churn rate is at ${da.churnRatePct}%, which is a ${da.churnRatePct > 30 ? 'serious concern' : 'manageable level'}. ${ceo.biggestProblems?.[1]||'Customer retention needs attention.'}. I recommend redirecting budget toward lifecycle and loyalty programs immediately.`
-          },
-          {
-            keys: ['social','content','engagement','instagram','post'],
-            ans: `Engagement rate is at ${soc.engagementRatePct}% — ${soc.engagementChangePct < 0 ? 'down' : 'up'} ${Math.abs(soc.engagementChangePct)}% this period. Top-performing category: ${soc.topContentCategory}. ${soc.contentTrends?.[0]||'Educational content performs best.'}. Audience grew ${soc.audienceGrowthPct}%.`
-          },
-          {
-            keys: ['risk','threat','danger','problem','issue'],
-            ans: `Overall risk level: ${risk.riskLevel}. Key concerns: ${risk.keyFindings?.join('; ')||'revenue concentration, margin compression, churn'}. The most urgent operational risk is ${risk.operationalRisks?.[0]?.name||'revenue concentration'} — ${risk.operationalRisks?.[0]?.timeline||'act within 60 days'}.`
-          },
-          {
-            keys: ['recommend','strategy','should','advice','plan','next step','action'],
-            ans: `My top recommendation is: <strong>${ceo.finalRecommendationLabel||'Focus on customer retention'}</strong>. ${ceo.finalRationale||'Retention offers the highest success probability with the lowest risk.'}. Current success probability: ${ceo.recommendations?.find(r=>r.label===ceo.finalRecommendationLabel)?.successProbabilityPct||81}%. Move fast.`
-          },
-          {
-            keys: ['health','score','overall','status','summary'],
-            ans: `Business health: <strong>${ceo.businessHealth}/100</strong> · Status: <strong>${ceo.status}</strong> · Urgency: <strong>${ceo.urgency}</strong>. Top problems: ${ceo.biggestProblems?.join('; ')||'revenue concentration, churn, margin compression'}. Biggest opportunities: ${ceo.biggestOpportunities?.join('; ')||'educational content, Product B growth, returning customer spend'}.`
-          },
-          {
-            keys: ['product','line','category','sku'],
-            ans: `${da.topProducts?.map(p=>`${p.name}: ${p.sharePct}% share`).join(' | ')||'Product A leads at 61% share'}. ${da.keyFindings?.[0]||'Revenue is concentrated in one product — diversification is critical.'}`
-          },
-          {
-            keys: ['opportunity','grow','growth','expand','invest'],
-            ans: `Our clearest opportunities: ${ceo.biggestOpportunities?.join(', ')||'educational content, Product B growth, returning customer spend'}. I would prioritize ${ceo.biggestOpportunities?.[0]||'educational content strategy'} first — it has the highest near-term ROI with minimal capital outlay.`
-          },
-          {
-            keys: ['cash','cash flow','liquidity','burn'],
-            ans: `Cash flow status is <strong>${cfo.cashFlowStatus}</strong>. Total expenses recorded: $${(cfo.expenses||0).toLocaleString()}. ${cfo.keyFindings?.[2]||'Budget allocation currently favors acquisition over retention.'}`
-          }
-        ];
+try {
+  const history = state.chatMessages
+    .slice(0, -1)
+    .slice(-10)
+    .map(item => ({
+      role: item.role === "ceo" ? "assistant" : "user",
+      content: item.content
+    }));
 
-        let reply = '';
-        for (const p of predefined) {
-          if (p.keys.some(k => q.includes(k))) { reply = p.ans; break; }
-        }
-        if (!reply) {
-          reply = `Good question. Based on all four reports, the business is in <strong>${ceo.status||'Growing'}</strong> mode with a health score of <strong>${ceo.businessHealth||82}/100</strong>. The single biggest lever right now is <strong>${ceo.finalRecommendationLabel||'customer retention'}</strong> — everything else flows from that decision. What specific area would you like to dig into?`;
-        }
+  const response = await fetch("/api/chat", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({
+      message: txt,
+      history: history
+    })
+  });
 
+  const data = await response.json();
+
+  if (!response.ok) {
+    throw new Error(data.error || "AI request failed");
+  }
+
+  reply = data.reply;
+} catch (error) {
+  console.error("CEO chat error:", error);
+  reply = "I'm unable to connect to the AI right now. Please try again.";
+}
         state.chatMessages.push({ role:'ceo', content: reply });
         typingEl.remove();
         const ceoBubble = document.createElement('div');
